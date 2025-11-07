@@ -1,0 +1,26 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* small custom */
+body {
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+/* glowing button */
+.btn-glow {
+  @apply bg-primary text-white px-5 py-2 rounded-lg font-semibold shadow-lg transform transition-transform;
+}
+.btn-glow:hover { transform: translateY(-4px) scale(1.02); }
+
+/* paper card */
+.card {
+  @apply bg-slate-800/70 backdrop-blur-md border border-slate-700 rounded-xl p-6;
+}
+
+
+/* html, body {
+  height: 100%;
+  overflow: hidden; /* 🚫 disables vertical & horizontal scroll */
+} */
