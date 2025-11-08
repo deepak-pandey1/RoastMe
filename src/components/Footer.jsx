@@ -56,11 +56,6 @@ export default function Footer() {
           transition={{ duration: 1 }}
         />
       </div>
-
-      {/* 🧊 Small tagline */}
-      {/* <p className="text-xs text-slate-500 mt-2 italic">
-        © {new Date().getFullYear()} Roast Me — Stay spicy 🔥
-      </p> */}
     </motion.footer>
   );
 }
