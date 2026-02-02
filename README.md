@@ -100,3 +100,64 @@ roast-me/
 ├── index.html
 ├── package.json
 └── vite.config.js
+
+
+# 🔥 Fun React UI Project
+
+## 🎯 Purpose of This Project
+
+This project is built to:
+
+- 🧠 Practice **React** & **UI Design**
+- 🎨 Experiment with **animations & UX**
+- 😄 Build something **fun, interactive & shareable**
+- 🚀 Showcase **frontend skills** on GitHub
+
+---
+
+## 👨‍💻 Creator
+
+### 💛 Created by **Deepak Pandey**
+
+A passionate **Full-Stack Developer** from India 🇮🇳  
+Who loves building **clean UI**, **fun projects**, and **creative web experiences**.
+
+Built with:
+- ❤️ Love  
+- 😄 Humor  
+- ☕ Lots of caffeine  
+
+---
+
+## 🛠️ Tech Stack
+
+- ⚛️ React
+- 🎨 Modern UI concepts
+- ✨ Animations & smooth UX
+
+---
+
+## 📜 License
+
+This project is **open-source** and available under the **MIT License**.
+
+---
+
+## 🤝 Contributing
+
+Got better **roast ideas**? 😈  
+Feel free to **fork** this repository and submit a **pull request**!
+
+Contributions are always welcome 💙
+
+---
+
+## 🔥 Warning
+
+⚠️ Pressing the button may **hurt your ego**.  
+Use at your own risk 😌🔥
+
+---
+
+⭐ If you like this project, don’t forget to **star the repo**!
+
