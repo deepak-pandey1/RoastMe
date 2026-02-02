@@ -103,9 +103,7 @@ roast-me/
 
 
 ```
-<br><br>
-
-# 🔥 Fun React UI Project
+<br>
 
 ## 🎯 Purpose of This Project
 
