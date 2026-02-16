@@ -1,9 +1,13 @@
 import React, { useEffect } from "react";
 import { motion, useAnimation } from "framer-motion";
 
-export default function RoastCard({ text, phase, onEraseDone }) {
+export default function RoastCard({ text, phase, eraseDuration, onEraseDone }) {
+
   const controls = useAnimation();
   const letters = text.split("");
+
+  // dynamic stagger so total time ALWAYS = eraseDuration
+  const stagger = eraseDuration / letters.length;
 
   useEffect(() => {
     if (phase === "erasing") {
@@ -15,7 +19,12 @@ export default function RoastCard({ text, phase, onEraseDone }) {
 
   const container = {
     show: { transition: { staggerChildren: 0.02 } },
-    erase: { transition: { staggerChildren: 0.01, staggerDirection: -1 } }
+    erase: {
+      transition: {
+        staggerChildren: stagger,
+        staggerDirection: -1
+      }
+    }
   };
 
   const char = {
