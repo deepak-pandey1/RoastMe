@@ -4,10 +4,10 @@ import { motion, useAnimation } from "framer-motion";
 export default function RoastCard({ text, phase, eraseDuration, onEraseDone }) {
 
   const controls = useAnimation();
-  const letters = text.split("");
+  const words = text.split(" ");
 
   // dynamic stagger so total time ALWAYS = eraseDuration
-  const stagger = eraseDuration / letters.length;
+  const stagger = eraseDuration / words.length;
 
   useEffect(() => {
     if (phase === "erasing") {
@@ -33,13 +33,18 @@ export default function RoastCard({ text, phase, eraseDuration, onEraseDone }) {
   };
 
   return (
-    <motion.div className="text-lg md:text-xl font-medium leading-relaxed">
+    <motion.div className="text-base sm:text-lg md:text-xl font-medium leading-relaxed px-2" >
       <motion.p variants={container} initial="show" animate={controls}>
-        {letters.map((ch, i) => (
-          <motion.span key={i} variants={char} className="inline-block">
-            {ch === " " ? "\u00A0" : ch}
-          </motion.span>
-        ))}
+        {words.map((word, i) => (
+  <motion.span
+    key={i}
+    variants={char}
+    className="inline-block mr-[0.35em] whitespace-nowrap"
+  >
+    {word}
+  </motion.span>
+))}
+
       </motion.p>
     </motion.div>
   );

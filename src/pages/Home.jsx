@@ -19,7 +19,8 @@ export default function Home({ direction }) {
       })}
       transition={{ duration: 0.35, ease: "easeOut" }}
     >
-      <main className="flex flex-col gap-10 px-6 pt-16 pb-10 select-none h-full">
+      <main className="flex flex-col gap-10 px-6 pt-16 pb-24 md:pb-10 select-none min-h-screen">
+
       <section className="max-w-3xl mx-auto text-center card">
         <h1 className="text-3xl font-extrabold">Roast Me 🔥</h1>
         {/* <p className="text-slate-300 mt-2">

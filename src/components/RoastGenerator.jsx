@@ -106,7 +106,7 @@ export default function RoastGenerator() {
 
       {/* PERSPECTIVE WRAPPER */}
       <div
-        className="fixed inset-0 flex items-end justify-center z-50 p-4 md:items-center"
+        className="fixed inset-0 flex items-center justify-center z-50 p-4"
         style={{ perspective: 1200 }}
       >
 
