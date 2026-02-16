@@ -36,7 +36,8 @@ export default function Header() {
       initial={{ y: -50, opacity: 0 }}
       animate={{ y: 0, opacity: 1 }}
       transition={{ type: "spring", stiffness: 120, damping: 10 }}
-      className="sticky top-0 z-50 w-full backdrop-blur-md bg-slate-900/70 border-b border-slate-800 shadow-md"
+      className="sticky top-0 z-50 w-full bg-slate-900/40 backdrop-blur-xl border-b border-white/5"
+
     >
       <div className="max-w-7xl mx-auto px-6 py-4 flex justify-between items-center">
         {/* 🌈 Logo Section */}
