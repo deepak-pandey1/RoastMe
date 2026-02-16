@@ -5,6 +5,7 @@ import { motion, AnimatePresence } from "framer-motion";
 import { GiFireBowl } from "react-icons/gi";
 import { FaLaughSquint, FaRedoAlt } from "react-icons/fa";
 import Confetti from "react-confetti";
+import { createPortal } from "react-dom"; // ⭐ ADDED
 
 function randomIndex(exclude, max) {
   if (max === 1) return 0;
@@ -17,7 +18,7 @@ function randomIndex(exclude, max) {
 
 export default function RoastGenerator() {
 
-  const ERASE_DURATION = 0.9; // 🔥 MASTER TIMELINE (change feel here)
+  const ERASE_DURATION = 0.9;
 
   const [current, setCurrent] = useState(null);
   const [open, setOpen] = useState(false);
@@ -92,100 +93,101 @@ export default function RoastGenerator() {
         Roast Me
       </motion.button>
 
-      <AnimatePresence mode="wait">
-  {open && (
-    <>
-      {/* BACKDROP — air compression feel */}
-      <motion.div
-        initial={{ opacity: 0, backdropFilter: "blur(0px)" }}
-        animate={{ opacity: 1, backdropFilter: "blur(14px)" }}
-        exit={{ opacity: 0, backdropFilter: "blur(0px)" }}
-        transition={{ duration: 0.5, ease: [0.22, 1, 0.36, 1] }}
-        className="fixed inset-0 bg-black/40 z-40"
-      />
+      {/* ⭐ PORTAL MODAL — OUTSIDE BLUR WORLD */}
+      {createPortal(
+        <AnimatePresence mode="wait">
+          {open && (
+            <>
+              {/* BACKDROP */}
+              <motion.div
+                initial={{ opacity: 0, backdropFilter: "blur(0px)" }}
+                animate={{ opacity: 1, backdropFilter: "blur(14px)" }}
+                exit={{ opacity: 0, backdropFilter: "blur(0px)" }}
+                transition={{ duration: 0.5, ease: [0.22, 1, 0.36, 1] }}
+                className="fixed inset-0 bg-black/40 z-[90]"
+              />
 
-      {/* PERSPECTIVE WRAPPER */}
-      <div
-        className="fixed inset-0 flex items-center justify-center z-50 p-4"
-        style={{ perspective: 1200 }}
-      >
-
-        <motion.div
-          initial={{
-            y: 220,
-            scale: 0.82,
-            rotateX: 18,
-            opacity: 0,
-            filter: "blur(8px)"
-          }}
-          animate={{
-            y: 0,
-            scale: 1,
-            rotateX: 0,
-            opacity: 1,
-            filter: "blur(0px)"
-          }}
-          exit={{
-            y: 120,
-            scale: 0.9,
-            rotateX: 10,
-            opacity: 0,
-            filter: "blur(6px)"
-          }}
-          transition={{
-            duration: 0.7,
-            ease: [0.16, 1, 0.3, 1]
-          }}
-          style={{ transformOrigin: "bottom center" }}
-          className="card max-w-xl w-full text-center space-y-8"
-        >
-
-          <Confetti numberOfPieces={50} recycle={false} />
-
-          <RoastCard
-            text={roasts[current]}
-            phase={phase}
-            eraseDuration={ERASE_DURATION}
-            onEraseDone={() => {
-              setOpen(false);
-              setCurrent(null);
-              setPhase("idle");
-              setErasing(false);
-            }}
-          />
-
-          <div className="flex justify-center gap-4">
-
-            <motion.button
-              whileTap={{ scale: 0.9 }}
-              onClick={playRoast}
-              className="px-6 py-3 rounded-full bg-gradient-to-r from-pink-500 to-yellow-400 text-black font-bold"
-            >
-              Roast Again
-            </motion.button>
-
-            <motion.button
-              whileTap={{ scale: 0.9 }}
-              onClick={handleReset}
-              className="flex items-center gap-2 px-6 py-3 rounded-full border border-slate-500 text-slate-200"
-            >
-              <motion.span
-                animate={erasing ? { rotate: 360 } : { rotate: 0 }}
-                transition={{ duration: ERASE_DURATION, ease: "easeInOut" }}
+              {/* MODAL */}
+              <div
+                className="fixed inset-0 flex items-center justify-center z-[100] p-4"
+                style={{ perspective: 1200 }}
               >
-                <FaRedoAlt className="text-cyan-400" />
-              </motion.span>
-              Clear
-            </motion.button>
+                <motion.div
+                  initial={{
+                    y: 220,
+                    scale: 0.82,
+                    rotateX: 18,
+                    opacity: 0,
+                    filter: "blur(0px)"
+                  }}
+                  animate={{
+                    y: 0,
+                    scale: 1,
+                    rotateX: 0,
+                    opacity: 1,
+                    filter: "blur(0px)"
+                  }}
+                  exit={{
+                    y: 120,
+                    scale: 0.9,
+                    rotateX: 10,
+                    opacity: 0
+                  }}
+                  transition={{
+                    duration: 0.7,
+                    ease: [0.16, 1, 0.3, 1]
+                  }}
+                  style={{ transformOrigin: "bottom center" }}
+                  className="card max-w-xl w-full text-center space-y-8"
+                >
 
-          </div>
+                  <Confetti numberOfPieces={50} recycle={false} />
 
-        </motion.div>
-      </div>
-    </>
-  )}
-</AnimatePresence>
+                  <RoastCard
+                    text={roasts[current]}
+                    phase={phase}
+                    eraseDuration={ERASE_DURATION}
+                    onEraseDone={() => {
+                      setOpen(false);
+                      setCurrent(null);
+                      setPhase("idle");
+                      setErasing(false);
+                    }}
+                  />
 
+                  <div className="flex justify-center gap-4">
+
+                    <motion.button
+                      whileTap={{ scale: 0.9 }}
+                      onClick={playRoast}
+                      className="px-6 py-3 rounded-full bg-gradient-to-r from-pink-500 to-yellow-400 text-black font-bold"
+                    >
+                      Roast Again
+                    </motion.button>
+
+                    <motion.button
+                      whileTap={{ scale: 0.9 }}
+                      onClick={handleReset}
+                      className="flex items-center gap-2 px-6 py-3 rounded-full border border-slate-500 text-slate-200"
+                    >
+                      <motion.span
+                        animate={erasing ? { rotate: 360 } : { rotate: 0 }}
+                        transition={{ duration: ERASE_DURATION, ease: "easeInOut" }}
+                      >
+                        <FaRedoAlt className="text-cyan-400" />
+                      </motion.span>
+                      Clear
+                    </motion.button>
+
+                  </div>
+
+                </motion.div>
+              </div>
+            </>
+          )}
+        </AnimatePresence>,
+        document.body
+      )}
     </div>
   );
 }
