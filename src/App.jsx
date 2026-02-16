@@ -1,32 +1,57 @@
-import React from "react";
-// import { Routes, Route } from "react-router-dom";
+import React, { useState } from "react";
 import Home from "./pages/Home";
 import About from "./pages/About";
 import Header from "./components/Header";
 import Footer from "./components/Footer";
-import { Routes, Route, useLocation } from "react-router-dom";
+import { Routes, Route, useLocation, useNavigate } from "react-router-dom";
 import { AnimatePresence } from "framer-motion";
+import { useSwipeable } from "react-swipeable";
 
-
-export default function App(){
+export default function App() {
   const location = useLocation();
+  const navigate = useNavigate();
+
+  // direction: 1 = next page, -1 = prev page
+  const [direction, setDirection] = useState(0);
+
+  const handlers = useSwipeable({
+    onSwipedLeft: () => {
+      if (location.pathname === "/") {
+        setDirection(1);
+        navigate("/about");
+      }
+    },
+
+    onSwipedRight: () => {
+      if (location.pathname === "/about") {
+        setDirection(-1);
+        navigate("/");
+      }
+    },
+
+    delta: 80,
+    preventScrollOnSwipe: true,
+    trackTouch: true,
+  });
 
   return (
-    <div className="min-h-screen flex flex-col text-white bg-[radial-gradient(ellipse_at_top,_#0f172a,_#020617)]">
-
+    <div
+      {...handlers}
+      className="min-h-screen flex flex-col text-white bg-[radial-gradient(ellipse_at_top,_#0f172a,_#020617)] overflow-x-hidden"
+    >
       <Header />
 
-      <div className="flex-1 relative">
-        <AnimatePresence mode="wait">
-          <Routes location={location} key={location.pathname}>
-            <Route path="/" element={<Home />} />
-            <Route path="/about" element={<About />} />
-          </Routes>
-        </AnimatePresence>
-      </div>
+      <div className="flex-1 relative overflow-hidden">
+  <AnimatePresence mode="wait" custom={direction}>
+    <Routes location={location} key={location.pathname}>
+      <Route path="/" element={<Home direction={direction} />} />
+      <Route path="/about" element={<About direction={direction} />} />
+    </Routes>
+  </AnimatePresence>
+</div>
+
 
       <Footer />
     </div>
   );
 }
-

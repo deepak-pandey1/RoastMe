@@ -3,7 +3,7 @@ import { motion, AnimatePresence } from "framer-motion";
 import { FiArrowUpRight, FiX } from "react-icons/fi";
 import profile from "../assets/profile.jpg";
 
-export default function About() {
+export default function About({ direction }) {
 
   const [open, setOpen] = useState(false);
   const [imgLoaded, setImgLoaded] = useState(false);
@@ -19,13 +19,22 @@ export default function About() {
 
   return (
     <>
-    <motion.main
-      initial={{ opacity: 0, x: -60 }}
-      animate={imgLoaded ? { opacity: 1, x: 0 } : { opacity: 0 }}
-      exit={{ opacity: 0, x: 60 }}
-      transition={{ duration: 0.35 }}
-      className="min-h-full flex items-center justify-center px-4 py-30 sm:py-12 md:py-25"
-    >
+    <motion.div
+  className="absolute inset-0 flex items-center justify-center px-4 py-30 sm:py-12 md:py-25"
+  custom={direction}
+  initial={(direction) => ({
+    x: direction === 1 ? "100%" : "-100%",
+    opacity: 0.9
+  })}
+  animate={imgLoaded ? { x: "0%", opacity: 1 } : { opacity: 0 }}
+  exit={(direction) => ({
+    x: direction === 1 ? "-100%" : "100%",
+    opacity: 0.9
+  })}
+  transition={{ duration: 0.35, ease: "easeOut" }}
+>
+
+
       <motion.div
         initial={{ opacity: 0, y: 35, scale: 0.95 }}
         animate={{ opacity: 1, y: 0, scale: 1 }}
@@ -115,18 +124,19 @@ export default function About() {
               </motion.span>
             </motion.a>
 
-            <div className="flex flex-wrap justify-center sm:justify-start gap-2 text-xs sm:text-sm pt-1 sm:pt-2">
+            {/* <div className="flex flex-wrap justify-center sm:justify-start gap-2 text-xs sm:text-sm pt-1 sm:pt-2">
               <span className="px-3 py-1 rounded-full bg-white/[0.04] border border-white/10 backdrop-blur-md hover:bg-white/[0.08] transition">React</span>
               <span className="px-3 py-1 rounded-full bg-white/[0.04] border border-white/10 backdrop-blur-md hover:bg-white/[0.08] transition">UI Design</span>
               <span className="px-3 py-1 rounded-full bg-white/[0.04] border border-white/10 backdrop-blur-md hover:bg-white/[0.08] transition">Animations</span>
               <span className="px-3 py-1 rounded-full bg-white/[0.04] border border-white/10 backdrop-blur-md hover:bg-white/[0.08] transition">Frontend</span>
-            </div>
+            </div> */}
 
           </div>
         </div>
 
       </motion.div>
-    </motion.main>
+    </motion.div>
+
 
     {/* PHOTO POPUP */}
     <AnimatePresence>
