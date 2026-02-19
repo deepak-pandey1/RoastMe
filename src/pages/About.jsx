@@ -8,7 +8,6 @@ export default function About({ direction }) {
   const [open, setOpen] = useState(false);
   const [imgLoaded, setImgLoaded] = useState(false);
 
-  // 🔥 preload + decode image before page animation
   useEffect(() => {
     const img = new Image();
     img.src = profile;
@@ -20,25 +19,27 @@ export default function About({ direction }) {
   return (
     <>
     <motion.div
-  className="absolute inset-0 flex items-center justify-center px-4 py-30 sm:py-12 md:py-25"
-  custom={direction}
-  initial={(direction) => ({
-    x: direction === 1 ? "100%" : "-100%",
-    opacity: 0.9
-  })}
-  animate={imgLoaded ? { x: "0%", opacity: 1 } : { opacity: 0 }}
-  exit={(direction) => ({
-    x: direction === 1 ? "-100%" : "100%",
-    opacity: 0.9
-  })}
-  transition={{ duration: 0.35, ease: "easeOut" }}
->
-
+      className="absolute inset-0 will-change-transform flex items-center justify-center px-4 py-24 sm:py-12 md:py-20"
+      custom={direction}
+      initial={(direction) => ({
+        x: direction === 1 ? "100%" : "-100%",
+        opacity: 0.98
+      })}
+      animate={{ x: "0%", opacity: 1 }}
+      exit={(direction) => ({
+        x: direction === 1 ? "-100%" : "100%",
+        opacity: 0.98
+      })}
+      transition={{
+        duration: 0.28,
+        ease: [0.22, 1, 0.36, 1]
+      }}
+    >
 
       <motion.div
-        initial={{ opacity: 0, y: 35, scale: 0.95 }}
+        initial={{ opacity: 0, y: 35, scale: 0.96 }}
         animate={{ opacity: 1, y: 0, scale: 1 }}
-        transition={{ duration: 0.45 }}
+        transition={{ duration: 0.35, ease: [0.22, 1, 0.36, 1] }}
         className="
         w-full max-w-lg sm:max-w-2xl lg:max-w-3xl
         rounded-3xl
@@ -61,23 +62,17 @@ export default function About({ direction }) {
 
         <div className="mt-6 flex flex-col sm:flex-row sm:items-center gap-4 sm:gap-7 text-center sm:text-left">
 
-          {/* Avatar */}
           <div className="flex justify-center sm:justify-start">
-
             <motion.button
               onClick={() => setOpen(true)}
               whileHover={{ scale: 1.08 }}
               whileTap={{ scale: 0.95 }}
               className="relative group"
             >
-
-              {/* glow ring */}
               <div className="absolute -inset-1 rounded-full bg-gradient-to-tr from-fuchsia-500 via-pink-500 to-amber-400 opacity-40 blur-md group-hover:opacity-70 transition" />
 
-              {/* PERFECT CIRCLE CONTAINER */}
               <div className="relative w-20 sm:w-28 md:w-32 aspect-square rounded-full overflow-hidden border border-white/20">
 
-                {/* blur placeholder */}
                 <div className={`absolute inset-0 bg-white/10 backdrop-blur-xl transition-opacity duration-500 ${imgLoaded ? "opacity-0" : "opacity-100"}`} />
 
                 <img
@@ -86,13 +81,10 @@ export default function About({ direction }) {
                   className={`w-full h-full object-cover transition-all duration-700 ${imgLoaded ? "scale-100 blur-0" : "scale-110 blur-2xl"}`}
                 />
               </div>
-
             </motion.button>
-
           </div>
 
           <div className="space-y-2 sm:space-y-3 max-w-xl mx-auto sm:mx-0">
-
             <h3 className="text-lg sm:text-2xl font-bold text-yellow-400">
               Deepak Pandey
             </h3>
@@ -112,24 +104,14 @@ export default function About({ direction }) {
               className="inline-flex items-center justify-center gap-2 mt-2 px-4 py-2.5 sm:px-5 sm:py-3 w-full sm:w-fit rounded-xl bg-gradient-to-r from-pink-500 via-rose-500 to-amber-400 text-slate-900 font-semibold shadow-lg shadow-pink-500/20"
             >
               <span>View Portfolio</span>
-
               <motion.span
                 animate={{ x: [0, 3, 0], y: [0, -3, 0] }}
                 transition={{ duration: 2.4, repeat: Infinity, ease: "easeInOut" }}
-                whileHover={{ x: 6, y: -6 }}
-                whileTap={{ x: 2, y: -2 }}
                 className="text-base flex items-center"
               >
                 <FiArrowUpRight />
               </motion.span>
             </motion.a>
-
-            {/* <div className="flex flex-wrap justify-center sm:justify-start gap-2 text-xs sm:text-sm pt-1 sm:pt-2">
-              <span className="px-3 py-1 rounded-full bg-white/[0.04] border border-white/10 backdrop-blur-md hover:bg-white/[0.08] transition">React</span>
-              <span className="px-3 py-1 rounded-full bg-white/[0.04] border border-white/10 backdrop-blur-md hover:bg-white/[0.08] transition">UI Design</span>
-              <span className="px-3 py-1 rounded-full bg-white/[0.04] border border-white/10 backdrop-blur-md hover:bg-white/[0.08] transition">Animations</span>
-              <span className="px-3 py-1 rounded-full bg-white/[0.04] border border-white/10 backdrop-blur-md hover:bg-white/[0.08] transition">Frontend</span>
-            </div> */}
 
           </div>
         </div>
@@ -137,8 +119,6 @@ export default function About({ direction }) {
       </motion.div>
     </motion.div>
 
-
-    {/* PHOTO POPUP */}
     <AnimatePresence>
       {open && (
         <motion.div
@@ -159,8 +139,6 @@ export default function About({ direction }) {
             <img
               src={profile}
               alt="profile large"
-              loading="eager"
-              decoding="async"
               className="max-h-[80vmin] max-w-[80vmin] aspect-square rounded-full object-cover"
             />
 
