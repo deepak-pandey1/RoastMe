@@ -1,158 +1,281 @@
-import React, { useState, useEffect } from "react";
-import { motion, AnimatePresence } from "framer-motion";
-import { FiArrowUpRight, FiX } from "react-icons/fi";
-import profile from "../assets/profile.jpg";
+import React, { useEffect, useState } from "react";
+import { motion } from "framer-motion";
+import { FiZap, FiShare2, FiSmile, FiShield } from "react-icons/fi";
 
-export default function About({ direction }) {
+const fadeUp = {
+  hidden: { opacity: 0, y: 25 },
+  show: (i) => ({
+    opacity: 1,
+    y: 0,
+    transition: {
+      delay: i * 0.07,
+      duration: 0.5,
+      ease: [0.22, 1, 0.36, 1],
+    },
+  }),
+};
 
-  const [open, setOpen] = useState(false);
-  const [imgLoaded, setImgLoaded] = useState(false);
+// 🔢 Counter Hook
+function useCounter(end, duration = 1400) {
+  const [count, setCount] = useState(0);
 
   useEffect(() => {
-    const img = new Image();
-    img.src = profile;
-    img.decode().then(() => {
-      setImgLoaded(true);
-    });
-  }, []);
+    let start = null;
+
+    const animate = (time) => {
+      if (!start) start = time;
+      const progress = Math.min((time - start) / duration, 1);
+      setCount(Math.floor(progress * end));
+
+      if (progress < 1) requestAnimationFrame(animate);
+    };
+
+    requestAnimationFrame(animate);
+  }, [end, duration]);
+
+  return count;
+}
+
+// 💬 Reviews
+const reviews = [
+  // Hinglish 🔥
+  "Bhai ye AI personal ho gaya 😭",
+  "Itna roast to meri ex ne bhi nahi kiya 💀",
+  "Self respect uninstall ho gayi 😂",
+  "Ye app dangerous hai bhai 😭",
+  "Roast sunke 2 min tak blank ho gaya 🤡",
+  "Bhai ye kaise itna accurate bol raha 😳",
+  "Mummy se zyada judge kar diya 💀",
+  "AI ne meri aukaat dikha di 😂",
+  "Bhai confidence tod diya pura 😭",
+  "Roast nahi reality check tha 💀",
+  "Dil pe lag gaya bhai 🥲",
+  "Ye AI sab jaanta hai kya 😳",
+  "Mujhe laga mazaak hoga... ye serious ho gaya 💀",
+  "Bhai meri personality expose ho gayi 😭",
+  "Roast ke baad life rethink kar raha hu 🤡",
+  "Bhai ye app uninstall kar raha hu ab 😂",
+
+  // English 😈
+  "Bro this AI knows too much 😳",
+  "I came for fun, left emotionally damaged 💀",
+  "That roast hit harder than expected 😭",
+  "Why is this AI so accurate 😭",
+  "I wasn’t ready for that level of honesty 💀",
+  "This is not AI, this is personal attack 🤡",
+  "I laughed… then I cried 😂",
+  "Who gave this AI access to my life 😭",
+  "That roast was brutally honest 💀",
+  "I feel attacked but impressed 😭",
+  "This AI just read my soul 💀",
+  "I need therapy after this 😂",
+  "This went from fun to trauma real quick 😭",
+  "Why does this feel so real 💀",
+  "I regret clicking that button 😂",
+
+  // Mixed + funny 😆
+  "Bhai roast tha ya character assassination 💀",
+  "AI ne meri band baja di 😂",
+  "Confidence gaya tel lene 😭",
+  "This AI didn’t hold back at all 💀",
+  "Roast sunke main chup ho gaya 🤡",
+  "Bro I wasn’t prepared for this 😭",
+  "Ye AI savage level max hai 💀",
+  "I laughed but it hurt inside 😂",
+  "Mujhe laga joke hoga, ye toh sach bol gaya 😭",
+  "This AI needs to chill bro 💀",
+  "Bhai itna sach bhi nahi bolna tha 😭",
+  "That roast was illegal 💀",
+  "I feel exposed 😭",
+  "AI ne meri beizzati global kar di 😂",
+  "Bro this is too real 💀"
+];
+
+// ⌨️ Typing Effect
+function useTypingEffect(list) {
+  const [text, setText] = useState("");
+  const [index, setIndex] = useState(0);
+  const [deleting, setDeleting] = useState(false);
+
+  useEffect(() => {
+    const current = list[index];
+    const speed = deleting ? 20 : 40;
+
+    const timer = setTimeout(() => {
+      setText((prev) =>
+        deleting
+          ? current.substring(0, prev.length - 1)
+          : current.substring(0, prev.length + 1)
+      );
+
+      if (!deleting && text === current) {
+        setTimeout(() => setDeleting(true), 1200);
+      } else if (deleting && text === "") {
+        setDeleting(false);
+        setIndex((prev) => (prev + 1) % list.length);
+      }
+    }, speed);
+
+    return () => clearTimeout(timer);
+  }, [text, deleting, index, list]);
+
+  return text;
+}
+
+export default function About({ direction }) {
+  const roasts = useCounter(10000);
+  const shares = useCounter(2000);
+  const typedText = useTypingEffect(reviews);
 
   return (
-    <>
     <motion.div
-      className="absolute inset-0 will-change-transform flex items-center justify-center px-4 py-24 sm:py-12 md:py-20"
+      className="absolute inset-0 overflow-hidden px-3 py-14 flex justify-center bg-[#020617]"
       custom={direction}
       initial={(direction) => ({
         x: direction === 1 ? "100%" : "-100%",
-        opacity: 0.98
+        opacity: 0,
       })}
       animate={{ x: "0%", opacity: 1 }}
       exit={(direction) => ({
         x: direction === 1 ? "-100%" : "100%",
-        opacity: 0.98
+        opacity: 0,
       })}
-      transition={{
-        duration: 0.28,
-        ease: [0.22, 1, 0.36, 1]
-      }}
+      transition={{ duration: 0.5 }}
     >
+      {/* 🌌 BACKGROUND (SUBTLE PREMIUM) */}
+      {/* 🌌 BACKGROUND (MATCH ORIGINAL THEME) */}
+<div className="absolute inset-0 z-0">
+  <motion.div
+    animate={{ x: [0, 25, -20, 0], y: [0, -20, 25, 0] }}
+    transition={{ duration: 18, repeat: Infinity }}
+    className="absolute w-80 h-80 bg-blue-500/10 blur-3xl rounded-full top-[-80px] left-[-80px]"
+  />
+  <motion.div
+    animate={{ x: [0, -25, 20, 0], y: [0, 20, -25, 0] }}
+    transition={{ duration: 20, repeat: Infinity }}
+    className="absolute w-80 h-80 bg-yellow-400/10 blur-3xl rounded-full bottom-[-80px] right-[-80px]"
+  />
+</div>
 
-      <motion.div
-        initial={{ opacity: 0, y: 35, scale: 0.96 }}
-        animate={{ opacity: 1, y: 0, scale: 1 }}
-        transition={{ duration: 0.35, ease: [0.22, 1, 0.36, 1] }}
-        className="
-        w-full max-w-lg sm:max-w-2xl lg:max-w-3xl
-        rounded-3xl
-        bg-gradient-to-b from-white/[0.06] to-white/[0.02]
-        backdrop-blur-2xl
-        ring-1 ring-white/10
-        shadow-[0_15px_50px_rgba(0,0,0,0.55)]
-        px-5 py-5 sm:px-10 sm:py-7
-        "
-      >
+      <div className="w-full max-w-4xl space-y-6 relative z-10">
 
-        <h2 className="text-2xl sm:text-3xl md:text-4xl font-extrabold text-center mb-5 tracking-tight bg-gradient-to-r from-pink-500 via-yellow-400 to-orange-500 bg-clip-text text-transparent">
-          About Roast Me 🔥
-        </h2>
+        {/* 🔥 HERO */}
+        <motion.div initial="hidden" animate="show" className="text-center">
+          <motion.h1
+            variants={fadeUp}
+            custom={0}
+            className="text-2xl sm:text-4xl font-extrabold text-white tracking-tight"
+          >
+            Inside Roast Me
+          </motion.h1>
 
-        <p className="text-center text-slate-300 text-sm sm:text-base max-w-xl mx-auto leading-snug sm:leading-relaxed">
-          Roast Me is a fun web app made for friendly roasting and laughs 😄  
-          The goal is simple — make you smile, not cry.
-        </p>
+          <motion.p
+            variants={fadeUp}
+            custom={1}
+            className="text-slate-400 text-xs sm:text-sm mt-2"
+          >
+            Savage AI roasting — but make it aesthetic ✨
+          </motion.p>
+        </motion.div>
 
-        <div className="mt-6 flex flex-col sm:flex-row sm:items-center gap-4 sm:gap-7 text-center sm:text-left">
-
-          <div className="flex justify-center sm:justify-start">
-            <motion.button
-              onClick={() => setOpen(true)}
-              whileHover={{ scale: 1.08 }}
-              whileTap={{ scale: 0.95 }}
-              className="relative group"
+        {/* 🚀 FEATURES */}
+        <div className="grid grid-cols-2 sm:grid-cols-4 gap-3">
+          {[
+            { icon: <FiZap />, title: "Instant" },
+            { icon: <FiSmile />, title: "Fun" },
+            { icon: <FiShare2 />, title: "Share" },
+            { icon: <FiShield />, title: "Safe" },
+          ].map((item, i) => (
+            <motion.div
+              key={i}
+              custom={i}
+              variants={fadeUp}
+              initial="hidden"
+              animate="show"
+              whileHover={{ y: -6, scale: 1.03 }}
+              className="py-3 rounded-xl bg-white/[0.03] border border-white/10 backdrop-blur-xl transition-all"
             >
-              <div className="absolute -inset-1 rounded-full bg-gradient-to-tr from-fuchsia-500 via-pink-500 to-amber-400 opacity-40 blur-md group-hover:opacity-70 transition" />
-
-              <div className="relative w-20 sm:w-28 md:w-32 aspect-square rounded-full overflow-hidden border border-white/20">
-
-                <div className={`absolute inset-0 bg-white/10 backdrop-blur-xl transition-opacity duration-500 ${imgLoaded ? "opacity-0" : "opacity-100"}`} />
-
-                <img
-                  src={profile}
-                  alt="profile"
-                  className={`w-full h-full object-cover transition-all duration-700 ${imgLoaded ? "scale-100 blur-0" : "scale-110 blur-2xl"}`}
-                />
+              <div className="text-white text-lg mb-1 flex justify-center">
+                {item.icon}
               </div>
-            </motion.button>
-          </div>
-
-          <div className="space-y-2 sm:space-y-3 max-w-xl mx-auto sm:mx-0">
-            <h3 className="text-lg sm:text-2xl font-bold text-yellow-400">
-              Deepak Pandey
-            </h3>
-
-            <p className="text-slate-300 text-sm sm:text-base leading-snug sm:leading-relaxed">
-              I build simple and useful websites that feel smooth and easy to use.
-              I enjoy clean design and fun interactions.
-            </p>
-
-            <motion.a
-              href="https://deepak-pandey1.github.io/Portfolio-Deepak-Pandey/#/"
-              target="_blank"
-              rel="noopener noreferrer"
-              whileHover={{ scale: 1.04, y: -1 }}
-              whileTap={{ scale: 0.96, y: 1 }}
-              transition={{ type: "spring", stiffness: 260, damping: 18 }}
-              className="inline-flex items-center justify-center gap-2 mt-2 px-4 py-2.5 sm:px-5 sm:py-3 w-full sm:w-fit rounded-xl bg-gradient-to-r from-pink-500 via-rose-500 to-amber-400 text-slate-900 font-semibold shadow-lg shadow-pink-500/20"
-            >
-              <span>View Portfolio</span>
-              <motion.span
-                animate={{ x: [0, 3, 0], y: [0, -3, 0] }}
-                transition={{ duration: 2.4, repeat: Infinity, ease: "easeInOut" }}
-                className="text-base flex items-center"
-              >
-                <FiArrowUpRight />
-              </motion.span>
-            </motion.a>
-
-          </div>
+              <p className="text-xs text-white text-center">{item.title}</p>
+            </motion.div>
+          ))}
         </div>
 
-      </motion.div>
-    </motion.div>
-
-    <AnimatePresence>
-      {open && (
+        {/* 💬 REVIEW BOX (PREMIUM GLASS + LIGHT SWEEP) */}
         <motion.div
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          exit={{ opacity: 0 }}
-          onClick={() => setOpen(false)}
-          className="fixed inset-0 bg-black/70 backdrop-blur-md z-50 flex items-center justify-center p-4"
+          variants={fadeUp}
+          custom={5}
+          initial="hidden"
+          animate="show"
+          className="relative rounded-2xl overflow-hidden border border-white/10 bg-white/[0.04] backdrop-blur-xl"
         >
+          {/* ✨ Light sweep */}
           <motion.div
-            initial={{ scale: 0.8, y: 40 }}
-            animate={{ scale: 1, y: 0 }}
-            exit={{ scale: 0.8, y: 40 }}
-            transition={{ type: "spring", damping: 20 }}
-            onClick={(e) => e.stopPropagation()}
-            className="relative rounded-full overflow-hidden shadow-2xl"
-          >
-            <img
-              src={profile}
-              alt="profile large"
-              className="max-h-[80vmin] max-w-[80vmin] aspect-square rounded-full object-cover"
-            />
+            animate={{ x: ["-100%", "100%"] }}
+            transition={{ duration: 4, repeat: Infinity }}
+            className="absolute inset-0 bg-gradient-to-r from-transparent via-white/10 to-transparent"
+          />
 
-            <button
-              onClick={() => setOpen(false)}
-              className="absolute top-2 right-2 bg-black/60 hover:bg-black/80 p-2 rounded-full text-white"
-            >
-              <FiX size={18} />
-            </button>
-          </motion.div>
+          <div className="px-5 py-5 relative z-10">
+            <h2 className="text-center text-sm font-semibold mb-4 text-white/90">
+              People After Using
+            </h2>
+
+            <div className="bg-black/20 rounded-xl px-4 py-4 min-h-[70px] flex items-center">
+              <p className="text-sm text-slate-200 leading-relaxed">
+                {typedText}
+                <span className="ml-1 opacity-50 animate-pulse">|</span>
+              </p>
+            </div>
+          </div>
         </motion.div>
-      )}
-    </AnimatePresence>
 
-    </>
+        {/* 📊 STATS */}
+        <div className="grid grid-cols-3 gap-2 text-center">
+          {[
+            { value: roasts, label: "Roasts" },
+            { value: shares, label: "Shares" },
+            { value: "Global", label: "Users" },
+          ].map((stat, i) => (
+            <motion.div
+              key={i}
+              variants={fadeUp}
+              custom={i + 6}
+              initial="hidden"
+              animate="show"
+              whileHover={{ scale: 1.05 }}
+              className="py-3 rounded-lg bg-white/[0.03] border border-white/10"
+            >
+              <h3 className="text-sm font-bold text-white">
+                {typeof stat.value === "number"
+                  ? `${Math.floor(stat.value / 1000)}K+`
+                  : stat.value}
+              </h3>
+              <p className="text-[10px] text-slate-400">{stat.label}</p>
+            </motion.div>
+          ))}
+        </div>
+
+        {/* 🚀 CTA */}
+        <motion.div
+          variants={fadeUp}
+          custom={10}
+          initial="hidden"
+          animate="show"
+          className="text-center pt-2"
+        >
+          <motion.a
+            href="/"
+            whileTap={{ scale: 0.95 }}
+            whileHover={{ scale: 1.08 }}
+            className="px-6 py-2 rounded-lg bg-white text-black text-xs font-semibold shadow-lg"
+          >
+            Try Roast
+          </motion.a>
+        </motion.div>
+      </div>
+    </motion.div>
   );
 }

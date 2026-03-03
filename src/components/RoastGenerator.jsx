@@ -1,11 +1,15 @@
 import React, { useState, useRef, useEffect } from "react";
 import roasts from "../data/roasts";
 import RoastCard from "./RoastCard";
+import ShareCard from "./ShareCard"; // ⭐ ADDED
 import { motion, AnimatePresence } from "framer-motion";
 import { GiFireBowl } from "react-icons/gi";
 import { FaLaughSquint, FaRedoAlt } from "react-icons/fa";
 import Confetti from "react-confetti";
-import { createPortal } from "react-dom"; // ⭐ ADDED
+import { createPortal } from "react-dom";
+import { toPng } from "html-to-image";
+import { FiShare2 } from "react-icons/fi";
+
 
 function randomIndex(exclude, max) {
   if (max === 1) return 0;
@@ -25,6 +29,8 @@ export default function RoastGenerator() {
   const [phase, setPhase] = useState("idle");
   const [erasing, setErasing] = useState(false);
   const audioRef = useRef(null);
+
+  const cardRef = useRef(null); // ⭐ used for share
 
   /* AUDIO PRELOAD */
   useEffect(() => {
@@ -68,6 +74,33 @@ export default function RoastGenerator() {
     setPhase("erasing");
   };
 
+  /* ⭐ UPDATED SHARE FUNCTION (USES HIDDEN CARD) */
+  const handleShare = async () => {
+    if (!cardRef.current) return;
+
+    try {
+      const dataUrl = await toPng(cardRef.current);
+
+      const blob = await (await fetch(dataUrl)).blob();
+      const file = new File([blob], "roast.png", { type: "image/png" });
+
+      if (navigator.canShare && navigator.canShare({ files: [file] })) {
+        await navigator.share({
+          files: [file],
+          title: "Roast Me 😂",
+          // text: "Try this 😂 roastmee.onrender.com"
+        });
+      } else {
+        const link = document.createElement("a");
+        link.download = "roast.png";
+        link.href = dataUrl;
+        link.click();
+      }
+    } catch (err) {
+      console.log(err);
+    }
+  };
+
   return (
     <div className="space-y-8 text-center">
 
@@ -93,7 +126,6 @@ export default function RoastGenerator() {
         Roast Me
       </motion.button>
 
-      {/* ⭐ PORTAL MODAL — OUTSIDE BLUR WORLD */}
       {createPortal(
         <AnimatePresence mode="wait">
           {open && (
@@ -117,15 +149,13 @@ export default function RoastGenerator() {
                     y: 220,
                     scale: 0.82,
                     rotateX: 18,
-                    opacity: 0,
-                    filter: "blur(0px)"
+                    opacity: 0
                   }}
                   animate={{
                     y: 0,
                     scale: 1,
                     rotateX: 0,
-                    opacity: 1,
-                    filter: "blur(0px)"
+                    opacity: 1
                   }}
                   exit={{
                     y: 120,
@@ -179,6 +209,36 @@ export default function RoastGenerator() {
                       Clear
                     </motion.button>
 
+                    <motion.button
+  onClick={handleShare}
+  whileHover={{ scale: 1.08 }}
+  whileTap={{ scale: 0.92 }}
+  className="relative flex items-center gap-2 px-6 py-3 rounded-full font-semibold text-white overflow-hidden group"
+  style={{
+    background: "linear-gradient(135deg, #00c6ff, #0072ff)",
+    boxShadow: "0 10px 30px rgba(0, 114, 255, 0.4)",
+  }}
+>
+  {/* Glow Effect */}
+  <span className="absolute inset-0 rounded-full bg-white/10 blur-xl opacity-0 group-hover:opacity-100 transition duration-500"></span>
+
+  {/* Shine Effect */}
+  <span className="absolute inset-0 overflow-hidden rounded-full">
+    <span className="absolute -left-full top-0 h-full w-1/2 bg-white/20 skew-x-[-20deg] group-hover:left-[120%] transition-all duration-700"></span>
+  </span>
+
+  {/* Icon Animation */}
+  <motion.span
+    animate={{ rotate: [0, 15, -10, 0] }}
+    transition={{ duration: 0.6 }}
+  >
+    <FiShare2 className="text-lg" />
+  </motion.span>
+
+  Share
+
+</motion.button>
+
                   </div>
 
                 </motion.div>
@@ -188,6 +248,20 @@ export default function RoastGenerator() {
         </AnimatePresence>,
         document.body
       )}
+
+      {/* ⭐ HIDDEN SHARE CARD (IMPORTANT) */}
+      <div
+        style={{
+          position: "fixed",
+          top: "-9999px",
+          left: "-9999px"
+        }}
+      >
+        <div ref={cardRef}>
+          {current !== null && <ShareCard text={roasts[current]} />}
+        </div>
+      </div>
+
     </div>
   );
 }

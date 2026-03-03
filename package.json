@@ -11,8 +11,10 @@
     "postinstall": "patch-package"
   },
   "dependencies": {
+    "@lottiefiles/dotlottie-react": "^0.18.3",
     "@tailwindcss/vite": "^4.1.17",
     "framer-motion": "^12.23.24",
+    "html-to-image": "^1.11.13",
     "react": "^19.1.1",
     "react-confetti": "^6.4.0",
     "react-dom": "^19.1.1",

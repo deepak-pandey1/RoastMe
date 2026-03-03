@@ -1,41 +1,50 @@
 import React from "react";
 import { motion } from "framer-motion";
-import { FaLinkedin } from "react-icons/fa";
+import { Link } from "react-router-dom";
 
 export default function Footer() {
   return (
     <motion.footer
-      initial={{ opacity: 0 }}
-      animate={{ opacity: 1 }}
-      transition={{ duration: 0.6 }}
-      className="px-4 py-3 border-t border-white/5 bg-transparent backdrop-blur-xl"
-
+      initial={{ opacity: 0, y: 30 }}
+      animate={{ opacity: 1, y: 0 }}
+      transition={{ duration: 0.6, ease: "easeOut" }}
+      className="relative z-10 px-6 py-3 border-t border-white/10 bg-slate-900/40 backdrop-blur-xl"
     >
-      <div className="max-w-5xl mx-auto flex items-center justify-between text-xs sm:text-sm text-slate-400">
+      <div className="max-w-6xl mx-auto flex items-center justify-between text-xs sm:text-sm text-slate-400">
 
-        {/* left */}
+        {/* LEFT */}
         <p>
           © {new Date().getFullYear()}{" "}
-          <span className="text-yellow-400 font-medium">Roast Me</span>
+          <span className="text-yellow-400 font-semibold">
+            Roast Me
+          </span>
         </p>
 
-        {/* center tagline */}
-        <p className="hidden sm:block text-slate-500 tracking-wide">
+        {/* CENTER
+        <div className="hidden sm:flex items-center gap-2 px-3 py-1 rounded-full bg-white/5 border border-white/10 text-[10px]">
+          ⚡ Powered by AI
+        </div> */}
 
-          Fun. Friendly. Savage 😄
-        </p>
+        {/* RIGHT */}
+        {/* RIGHT */}
+        <div className="flex items-center gap-3 text-slate-500 text-xs">
+          <Link
+            to="/privacy"
+            className="hover:text-white transition"
+          >
+            Privacy
+          </Link>
 
-        {/* right */}
-        <motion.a
-          href="https://www.linkedin.com/in/deepak-pandey786/"
-          target="_blank"
-          rel="noopener noreferrer"
-          whileHover={{ scale: 1.15 }}
-          transition={{ type: "spring", stiffness: 200 }}
-          className="text-slate-400 hover:text-blue-400 text-base"
-        >
-          <FaLinkedin />
-        </motion.a>
+          <span>•</span>
+
+          <Link
+            to="/terms"
+            className="hover:text-white transition"
+          >
+            Terms
+          </Link>
+        </div>
+
 
       </div>
     </motion.footer>

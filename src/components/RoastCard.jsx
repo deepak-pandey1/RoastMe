@@ -46,6 +46,7 @@ export default function RoastCard({ text, phase, eraseDuration, onEraseDone }) {
 ))}
 
       </motion.p>
+
     </motion.div>
   );
 }
