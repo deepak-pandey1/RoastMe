@@ -121,10 +121,10 @@ export default function Privacy() {
             <FiShield className="text-blue-400 text-2xl sm:text-3xl md:text-4xl" />
           </h1>
 
-          <div className="flex items-center justify-center gap-2 text-gray-400 mt-4 text-sm sm:text-base px-2 text-center">
-            <FiInfo className="text-blue-400 shrink-0" />
-            <p>Your privacy and data protection are important to us.</p>
-          </div>
+          <div className="flex items-start justify-center gap-2 text-gray-400 mt-4 text-sm sm:text-base px-2 text-center max-w-xl mx-auto">
+  <FiInfo className="text-blue-400 shrink-0 mt-[5px]" />
+  <p>Your privacy and data protection are important to us.</p>
+</div>
 
         </motion.div>
 
@@ -171,12 +171,12 @@ export default function Privacy() {
 
         {/* Footer */}
         <motion.div
-          variants={fadeUp}
-          className="mt-14 sm:mt-16 md:mt-20 text-center flex items-center justify-center gap-2 text-gray-500 text-xs sm:text-sm px-4"
-        >
-          <FiCheckCircle className="text-green-400 shrink-0" />
-          <p>Your data remains under your control while using this platform.</p>
-        </motion.div>
+  variants={fadeUp}
+  className="mt-14 sm:mt-16 md:mt-20 text-center flex items-start justify-center gap-2 text-gray-500 text-xs sm:text-sm px-4 max-w-xl mx-auto"
+>
+  <FiCheckCircle className="text-green-400 shrink-0 mt-[3px]" />
+  <p>Your data remains under your control while using this platform.</p>
+</motion.div>
 
       </motion.div>
     </div>

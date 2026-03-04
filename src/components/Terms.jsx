@@ -103,11 +103,11 @@ export default function Terms() {
           </h1>
 
           <div className="mt-4 text-gray-400 text-sm sm:text-base text-center max-w-xl mx-auto px-2">
-            <p className="inline-flex items-center gap-2 leading-relaxed">
-              <FiInfo className="text-blue-400 shrink-0" />
-              Please review these terms carefully before using the platform.
-            </p>
-          </div>
+  <p className="inline-flex items-start gap-2 leading-relaxed">
+    <FiInfo className="text-blue-400 shrink-0 mt-[6px]" />
+    Please review these terms carefully before using the platform.
+  </p>
+</div>
 
         </motion.div>
 
@@ -155,10 +155,10 @@ export default function Terms() {
           variants={fadeUp}
           className="mt-14 sm:mt-16 md:mt-20 text-gray-500 text-xs sm:text-sm text-center max-w-xl mx-auto px-4"
         >
-          <p className="inline-flex items-center gap-2 leading-relaxed">
-            <FiCheckCircle className="text-green-400 shrink-0" />
-            By continuing to use this platform, you agree to these Terms & Conditions.
-          </p>
+          <p className="inline-flex items-start gap-2 leading-relaxed">
+  <FiCheckCircle className="text-green-400 shrink-0 mt-[5px]" />
+  By continuing to use this platform, you agree to these Terms & Conditions.
+</p>
         </motion.div>
 
       </motion.div>

@@ -8,6 +8,7 @@ import { AnimatePresence } from "framer-motion";
 import { useSwipeable } from "react-swipeable";
 import Privacy from "./components/Privacy";   // ✅ added
 import Terms from "./components/Terms";       // ✅ added
+import ScrollToTop from "./components/ScrollToTop";
 
 export default function App() {
   const location = useLocation();
@@ -53,6 +54,8 @@ export default function App() {
       {...handlers}
       className="min-h-screen flex flex-col text-white bg-[radial-gradient(ellipse_at_top,_#0f172a,_#020617)] overflow-x-hidden"
     >
+
+      <ScrollToTop />   {/* 👈 ADD THIS */}
       <Header />
 
       <div className="flex-1 relative overflow-hidden">
