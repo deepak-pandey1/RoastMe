@@ -122,7 +122,7 @@ export default function Privacy() {
           </h1>
 
           <div className="flex items-start justify-center gap-2 text-gray-400 mt-4 text-sm sm:text-base px-2 text-center max-w-xl mx-auto">
-  <FiInfo className="text-blue-400 shrink-0 mt-[5px]" />
+  <FiInfo className="text-blue-400 shrink-0 mt-[4px]" />
   <p>Your privacy and data protection are important to us.</p>
 </div>
 
