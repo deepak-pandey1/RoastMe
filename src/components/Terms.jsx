@@ -11,29 +11,18 @@ import {
   FiCheckCircle
 } from "react-icons/fi";
 
-const container = {
-  hidden: { opacity: 0 },
-  show: {
-    opacity: 1,
-    transition: {
-      staggerChildren: 0.18,
-    },
-  },
-};
-
+/* ✅ Same smooth fadeUp animation */
 const fadeUp = {
-  hidden: {
-    opacity: 0,
-    y: 50,
-  },
-  show: {
+  hidden: { opacity: 0, y: 40 },
+  visible: (i) => ({
     opacity: 1,
     y: 0,
     transition: {
-      duration: 0.7,
-      ease: [0.22, 1, 0.36, 1],
+      delay: i * 0.08,
+      duration: 0.6,
+      ease: "easeOut",
     },
-  },
+  }),
 };
 
 const sections = [
@@ -84,16 +73,15 @@ export default function Terms() {
 
       </div>
 
-      <motion.div
-        variants={container}
-        initial="hidden"
-        whileInView="show"
-        viewport={{ once: true, amount: 0.25 }}
-        className="relative z-10 max-w-7xl mx-auto"
-      >
+      <div className="relative z-10 max-w-7xl mx-auto">
 
+        {/* Header */}
         <motion.div
+          custom={0}
           variants={fadeUp}
+          initial="hidden"
+          whileInView="visible"
+          viewport={{ amount: 0.4, once: false }}
           className="text-center mb-10 sm:mb-12 md:mb-16"
         >
 
@@ -103,20 +91,25 @@ export default function Terms() {
           </h1>
 
           <div className="mt-4 text-gray-400 text-sm sm:text-base text-center max-w-xl mx-auto px-2">
-  <p className="inline-flex items-start gap-2 leading-relaxed">
-    <FiInfo className="text-blue-400 shrink-0 mt-[6px]" />
-    Please review these terms carefully before using the platform.
-  </p>
-</div>
+            <p className="inline-flex items-start gap-2 leading-relaxed">
+              <FiInfo className="text-blue-400 shrink-0 mt-[6px]" />
+              Please review these terms carefully before using the platform.
+            </p>
+          </div>
 
         </motion.div>
 
+        {/* Cards */}
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-2 gap-5 sm:gap-6 md:gap-8">
 
           {sections.map((item, i) => (
             <motion.div
               key={i}
+              custom={i}
               variants={fadeUp}
+              initial="hidden"
+              whileInView="visible"
+              viewport={{ amount: 0.3, once: false }}
               whileHover={{
                 scale: 1.04,
                 y: -6,
@@ -151,17 +144,22 @@ export default function Terms() {
 
         </div>
 
+        {/* Footer */}
         <motion.div
+          custom={sections.length}
           variants={fadeUp}
+          initial="hidden"
+          whileInView="visible"
+          viewport={{ amount: 0.4, once: false }}
           className="mt-14 sm:mt-16 md:mt-20 text-gray-500 text-xs sm:text-sm text-center max-w-xl mx-auto px-4"
         >
           <p className="inline-flex items-start gap-2 leading-relaxed">
-  <FiCheckCircle className="text-green-400 shrink-0 mt-[5px]" />
-  By continuing to use this platform, you agree to these Terms & Conditions.
-</p>
+            <FiCheckCircle className="text-green-400 shrink-0 mt-[5px]" />
+            By continuing to use this platform, you agree to these Terms & Conditions.
+          </p>
         </motion.div>
 
-      </motion.div>
+      </div>
     </div>
   );
 }

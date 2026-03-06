@@ -13,29 +13,18 @@ import {
   FiCheckCircle,
 } from "react-icons/fi";
 
-const container = {
-  hidden: { opacity: 0 },
-  show: {
-    opacity: 1,
-    transition: {
-      staggerChildren: 0.18,
-    },
-  },
-};
-
+/* ✅ Same smooth fadeUp style as Privacy Policy page */
 const fadeUp = {
-  hidden: {
-    opacity: 0,
-    y: 50,
-  },
-  show: {
+  hidden: { opacity: 0, y: 40 },
+  visible: (i) => ({
     opacity: 1,
     y: 0,
     transition: {
-      duration: 0.7,
-      ease: [0.22, 1, 0.36, 1],
+      delay: i * 0.08,
+      duration: 0.6,
+      ease: "easeOut",
     },
-  },
+  }),
 };
 
 const sections = [
@@ -85,7 +74,7 @@ export default function Privacy() {
   return (
     <div className="relative min-h-screen bg-[#020617] text-white overflow-hidden px-4 sm:px-6 md:px-10 lg:px-16 py-14 sm:py-16 md:py-20 lg:py-24">
 
-      {/* Animated Background */}
+      {/* Animated Background (UNCHANGED) */}
       <div className="absolute inset-0 z-0">
 
         <motion.div
@@ -102,17 +91,15 @@ export default function Privacy() {
 
       </div>
 
-      <motion.div
-        variants={container}
-        initial="hidden"
-        whileInView="show"
-        viewport={{ once: true, amount: 0.25 }}
-        className="relative z-10 max-w-7xl mx-auto"
-      >
+      <div className="relative z-10 max-w-7xl mx-auto">
 
         {/* Header */}
         <motion.div
+          custom={0}
           variants={fadeUp}
+          initial="hidden"
+          whileInView="visible"
+          viewport={{ amount: 0.4, once: false }}  // ✅ triggers every time
           className="text-center mb-10 sm:mb-12 md:mb-16"
         >
 
@@ -122,9 +109,9 @@ export default function Privacy() {
           </h1>
 
           <div className="flex items-start justify-center gap-2 text-gray-400 mt-4 text-sm sm:text-base px-2 text-center max-w-xl mx-auto">
-  <FiInfo className="text-blue-400 shrink-0 mt-[4px]" />
-  <p>Your privacy and data protection are important to us.</p>
-</div>
+            <FiInfo className="text-blue-400 shrink-0 mt-[4px]" />
+            <p>Your privacy and data protection are important to us.</p>
+          </div>
 
         </motion.div>
 
@@ -134,7 +121,11 @@ export default function Privacy() {
           {sections.map((item, i) => (
             <motion.div
               key={i}
+              custom={i}
               variants={fadeUp}
+              initial="hidden"
+              whileInView="visible"
+              viewport={{ amount: 0.3, once: false }}  // ✅ works on scroll up & down
               whileHover={{
                 scale: 1.05,
                 y: -6,
@@ -171,14 +162,18 @@ export default function Privacy() {
 
         {/* Footer */}
         <motion.div
-  variants={fadeUp}
-  className="mt-14 sm:mt-16 md:mt-20 text-center flex items-start justify-center gap-2 text-gray-500 text-xs sm:text-sm px-4 max-w-xl mx-auto"
->
-  <FiCheckCircle className="text-green-400 shrink-0 mt-[3px]" />
-  <p>Your data remains under your control while using this platform.</p>
-</motion.div>
+          custom={sections.length}
+          variants={fadeUp}
+          initial="hidden"
+          whileInView="visible"
+          viewport={{ amount: 0.4, once: false }}  // ✅ also re-triggers
+          className="mt-14 sm:mt-16 md:mt-20 text-center flex items-start justify-center gap-2 text-gray-500 text-xs sm:text-sm px-4 max-w-xl mx-auto"
+        >
+          <FiCheckCircle className="text-green-400 shrink-0 mt-[3px]" />
+          <p>Your data remains under your control while using this platform.</p>
+        </motion.div>
 
-      </motion.div>
+      </div>
     </div>
   );
 }

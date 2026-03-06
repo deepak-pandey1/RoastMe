@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { motion } from "framer-motion";
+import { motion, AnimatePresence } from "framer-motion";
 import { FiZap, FiShare2, FiSmile, FiShield } from "react-icons/fi";
 
 const fadeUp = {
@@ -123,9 +123,33 @@ function useTypingEffect(list) {
 }
 
 export default function About({ direction }) {
+  const [activeFeature, setActiveFeature] = useState(null);
   const roasts = useCounter(10000);
   const shares = useCounter(2000);
   const typedText = useTypingEffect(reviews);
+
+  const features = [
+  {
+    icon: <FiZap />,
+    title: "Instant",
+    desc: "Get roasted instantly with zero wait time. Our AI processes your input in milliseconds and delivers savage responses immediately.",
+  },
+  {
+    icon: <FiSmile />,
+    title: "Fun",
+    desc: "Pure entertainment mode 😈 Every roast is witty, playful, and designed to make you laugh (even if it hurts a little).",
+  },
+  {
+    icon: <FiShare2 />,
+    title: "Share",
+    desc: "One-click share feature. Show your friends how brutally honest AI can be and go viral with savage content.",
+  },
+  {
+    icon: <FiShield />,
+    title: "Safe",
+    desc: "Completely safe environment. No hate speech, no real harm — just controlled savage humor.",
+  },
+];
 
   return (
     <motion.div
@@ -180,13 +204,26 @@ export default function About({ direction }) {
 
         {/* 🚀 FEATURES */}
         <div className="grid grid-cols-2 sm:grid-cols-4 gap-3">
-          {[
-            { icon: <FiZap />, title: "Instant" },
-            { icon: <FiSmile />, title: "Fun" },
-            { icon: <FiShare2 />, title: "Share" },
-            { icon: <FiShield />, title: "Safe" },
-          ].map((item, i) => (
-            <motion.div
+  {features.map((item, i) => (
+    <motion.div
+      key={i}
+      custom={i}
+      variants={fadeUp}
+      initial="hidden"
+      animate="show"
+      whileHover={{ y: -6, scale: 1.03 }}
+      whileTap={{ scale: 0.95 }}
+      onClick={() => setActiveFeature(item)}
+      className="cursor-pointer py-3 rounded-xl bg-white/[0.03] border border-white/10 backdrop-blur-xl transition-all"
+    >
+      <div className="text-white text-lg mb-1 flex justify-center">
+        {item.icon}
+      </div>
+      <p className="text-xs text-white text-center">{item.title}</p>
+    </motion.div>
+  ))}
+</div>
+            {/* <motion.div
               key={i}
               custom={i}
               variants={fadeUp}
@@ -201,7 +238,7 @@ export default function About({ direction }) {
               <p className="text-xs text-white text-center">{item.title}</p>
             </motion.div>
           ))}
-        </div>
+        </div> */}
 
         {/* 💬 REVIEW BOX (PREMIUM GLASS + LIGHT SWEEP) */}
         <motion.div
@@ -275,6 +312,109 @@ export default function About({ direction }) {
             Try Roast
           </motion.a>
         </motion.div>
+<AnimatePresence>
+  {activeFeature && (
+    <motion.div
+      className="fixed inset-0 z-50 flex items-center justify-center px-4"
+      initial={{ opacity: 0 }}
+      animate={{ opacity: 1 }}
+      exit={{ opacity: 0 }}
+      transition={{ duration: 0.3 }}
+      onClick={() => setActiveFeature(null)}
+    >
+      {/* 🌫 Animated Overlay */}
+      <motion.div
+        initial={{ backdropFilter: "blur(0px)", backgroundColor: "rgba(0,0,0,0)" }}
+        animate={{ backdropFilter: "blur(12px)", backgroundColor: "rgba(0,0,0,0.6)" }}
+        exit={{ backdropFilter: "blur(0px)", backgroundColor: "rgba(0,0,0,0)" }}
+        transition={{ duration: 0.35, ease: "easeOut" }}
+        className="absolute inset-0"
+      />
+
+      {/* 💎 Glass Card */}
+      <motion.div
+        initial={{ scale: 0.85, opacity: 0, y: 40 }}
+        animate={{ scale: 1, opacity: 1, y: 0 }}
+        exit={{ scale: 0.85, opacity: 0, y: 40 }}
+        transition={{ type: "spring", stiffness: 140, damping: 18 }}
+        onClick={(e) => e.stopPropagation()}
+        className="relative w-full max-w-md rounded-2xl border border-white/20 
+                   bg-white/[0.08] backdrop-blur-2xl p-6 shadow-2xl"
+      >
+        {/* Close Button */}
+<button
+  onClick={() => setActiveFeature(null)}
+  className="absolute top-4 right-4 text-white/50 hover:text-white transition text-sm"
+>
+  ✕
+</button>
+
+{/* 🔥 Header Row (Icon + Title Side by Side) */}
+{/* 🔥 Header Row (Minimal Clean) */}
+<div className="flex items-center gap-3 mb-4">
+  
+  {/* Plain Icon */}
+  <motion.div
+    initial={{ opacity: 0, y: -6 }}
+    animate={{ opacity: 1, y: 0 }}
+    transition={{ duration: 0.3 }}
+    className="text-white text-2xl"
+  >
+    {activeFeature.icon}
+  </motion.div>
+
+  {/* Title */}
+  <motion.h2
+    initial={{ opacity: 0, y: -6 }}
+    animate={{ opacity: 1, y: 0 }}
+    transition={{ duration: 0.3, delay: 0.05 }}
+    className="text-xl font-semibold text-white tracking-wide"
+  >
+    {activeFeature.title}
+  </motion.h2>
+</div>
+
+{/* ✨ Animated Divider */}
+<motion.div
+  initial={{ scaleX: 0 }}
+  animate={{ scaleX: 1 }}
+  transition={{ duration: 0.5, ease: [0.22, 1, 0.36, 1] }}
+  className="h-px w-full bg-white/20 origin-center mb-5"
+/>
+
+{/* 💬 Description (Staggered Words) */}
+<motion.p
+  initial="hidden"
+  animate="show"
+  variants={{
+    hidden: {},
+    show: {
+      transition: {
+        staggerChildren: 0.03,
+        delayChildren: 0.15, // small delay after divider
+      },
+    },
+  }}
+  className="text-sm text-slate-300 leading-relaxed flex flex-wrap"
+>
+  {activeFeature.desc.split(" ").map((word, index) => (
+    <motion.span
+      key={index}
+      variants={{
+        hidden: { opacity: 0, y: 8 },
+        show: { opacity: 1, y: 0 },
+      }}
+      transition={{ duration: 0.3, ease: "easeOut" }}
+      className="mr-1"
+    >
+      {word}
+    </motion.span>
+  ))}
+</motion.p>
+      </motion.div>
+    </motion.div>
+  )}
+</AnimatePresence>
       </div>
     </motion.div>
   );
